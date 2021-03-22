@@ -23,19 +23,26 @@ const testEpisodeWithoutImage = {
 }
 
 test("renders without error", () => {
-    render(<Episode testEpisode = {testEpisode} />)
+    render(<Episode episode = {testEpisode} />);
 });
 
 test("renders the summury test passed as prop", ()=>{
-    render(<Episode testSummary = {testEpisode.summary} />)
+    render(<Episode episode = {testEpisode} />);
 
-    const summary = screen.queryByText(/this is my summary/i)
+    const summary = screen.queryByText(/this is my summary/i);
 
     expect(summary).toBeInTheDocument();
+    expect(summary).toHaveTextContent(/this is my summary/i);
+    expect(summary).not.toBeNull();
 });
 
 test("renders default image when image is not defined", ()=>{
-    render(<Episode testEpisode = {testEpisodeWithoutImage} />)
+    render(<Episode episode = {testEpisodeWithoutImage} />)
+
+    const altTag = screen.queryByAltText('./stranger_things.png')
+    // console.log(altTag)
+
+    expect(altTag).toBeInTheDocument()
 
 
 })
