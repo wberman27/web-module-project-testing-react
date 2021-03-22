@@ -5,14 +5,35 @@ import userEvent from '@testing-library/user-event';
 import Show from './../Show';
 
 const testShow = {
-    //add in approprate test data structure here.
+    name: "The Mandalorian",
+    summary: "This is a show about Mandalorians",
+    season: [
+        {
+            id: 1234,
+            name: 'One',
+            episodes: []
+        },
+        {
+            id: 1234567,
+            name: 'Two',
+            episodes: []
+        }
+    ]
 }
 
-// test('renders testShow and no selected Season without errors', ()=>{
-// });
+console.log(testShow)
 
-// test('renders Loading component when prop show is null', () => {
-// });
+test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show = {testShow} selectedSeason = {'none'}/>)
+});
+
+test('renders Loading component when prop show is null', () => {
+    render(<Show show = {null} selectedSeason ={'none'} />)
+
+    const loading = screen.queryByText(/Fetching data.../i)
+
+    expect(loading).toBeInTheDocument();
+});
 
 // test('renders same number of options seasons are passed in', ()=>{
 // });
