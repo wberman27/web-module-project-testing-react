@@ -21,7 +21,9 @@ const testShow = {
     ]
 }
 
-console.log(testShow)
+const mockHandleSelect = jest.fn()
+
+
 
 test('renders testShow and no selected Season without errors', ()=>{
     render(<Show show = {testShow} selectedSeason = {'none'}/>)
@@ -35,14 +37,30 @@ test('renders Loading component when prop show is null', () => {
     expect(loading).toBeInTheDocument();
 });
 
-// test('renders same number of options seasons are passed in', ()=>{
-// });
+test('renders same number of options seasons are passed in', ()=>{
+    render(<Show show = {testShow} selectedSeason = {'none'}/>)
 
-// test('handleSelect is called when an season is selected', () => {
-// });
+    const options = screen.queryLabelText('Select A Season')
+    // console.log(options)
+    expect(options).toHaveLength(2)
+});
 
-// test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
-// });
+test('handleSelect is called when an season is selected', () => {
+    render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
+
+    const options = screen.queryLabelText('Select A Season')
+    userEvent.selectOptions(options, 'Season 1')
+
+    expect(mockHandleSelect).toHaveBeenCalled();
+
+});
+
+test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+    const {rerender} = render(<Show show = {testShow} selectedSeason = {'none'}/>)
+
+    rerender(<Show show = {testShow} selectedSeason = {1}/>)
+    
+});
 
 //Tasks:
 //1. Build an example data structure that contains the show data in the correct format. A show should contain a name, a summary and an array of seasons, each with a id, name and (empty) list of episodes within them. Use console.logs within the client code if you need to to verify the structure of show data.
