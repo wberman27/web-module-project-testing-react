@@ -2,25 +2,79 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import Episode from './../Episode'
 import Show from './../Show';
 
 const testShow = {
-    //add in approprate test data structure here.
+    image: {},
+    name: "The Mandalorian",
+    summary: "This is a show about Mandalorians",
+    seasons: [
+        {
+            id: 1234,
+            name: 'One',
+            episodes: [{
+                id:1,
+                name: "",
+                image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
+                season: 1,
+                number: 1,
+                summary: "This is my summary",
+                runtime: 1
+            }]
+        },
+        {
+            id: 1234567,
+            name: 'Two',
+            episodes: []
+        }
+    ]
 }
 
+const mockHandleSelect = jest.fn()
+
+
 test('renders testShow and no selected Season without errors', ()=>{
+    render(<Show show = {testShow} selectedSeason = {'none'}/>)
 });
 
 test('renders Loading component when prop show is null', () => {
+    render(<Show show = {null} selectedSeason ={'none'} />)
+
+    const loading = screen.queryByText(/Fetching data.../i)
+
+    expect(loading).toBeInTheDocument();
 });
 
 test('renders same number of options seasons are passed in', ()=>{
+    render(<Show show = {testShow} selectedSeason = {'none'}/>)
+
+    const options = screen.queryByLabelText('Select A Season')
+    // console.log(options)
+    expect(options).toHaveLength(3)
 });
 
 test('handleSelect is called when an season is selected', () => {
+    render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
+
+    const options = screen.queryByLabelText('Select A Season')
+    userEvent.selectOptions(options, '1234')
+
+    expect(mockHandleSelect).toHaveBeenCalled();
+
 });
 
-test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+test('component renders when no seasons are selected and when rerenders with a season passed in', async () => {
+    const {rerender} = render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
+
+    
+    // expect(episodeText).not.toBeInTheDocument();
+
+    rerender(<Show show = {testShow} selectedSeason = {'1234'} handleSelect={mockHandleSelect}/>)
+    const episodeText = await screen.findByText(/one/i)
+    expect(episodeText).toBeInTheDocument();
+    
+    
 });
 
 //Tasks:
