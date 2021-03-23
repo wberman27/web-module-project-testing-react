@@ -2,12 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import Episode from './../Episode'
 import Show from './../Show';
 
 const testShow = {
+    image: {},
     name: "The Mandalorian",
     summary: "This is a show about Mandalorians",
-    season: [
+    seasons: [
         {
             id: 1234,
             name: 'One',
@@ -22,7 +24,6 @@ const testShow = {
 }
 
 const mockHandleSelect = jest.fn()
-
 
 
 test('renders testShow and no selected Season without errors', ()=>{
@@ -40,25 +41,34 @@ test('renders Loading component when prop show is null', () => {
 test('renders same number of options seasons are passed in', ()=>{
     render(<Show show = {testShow} selectedSeason = {'none'}/>)
 
-    const options = screen.queryLabelText('Select A Season')
+    const options = screen.queryByLabelText('Select A Season')
     // console.log(options)
-    expect(options).toHaveLength(2)
+    expect(options).toHaveLength(3)
 });
 
 test('handleSelect is called when an season is selected', () => {
     render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
 
-    const options = screen.queryLabelText('Select A Season')
-    userEvent.selectOptions(options, 'Season 1')
+    const options = screen.queryByLabelText('Select A Season')
+    userEvent.selectOptions(options, '1234')
 
     expect(mockHandleSelect).toHaveBeenCalled();
 
 });
 
 test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
-    const {rerender} = render(<Show show = {testShow} selectedSeason = {'none'}/>)
+    const {rerender} = render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
 
-    rerender(<Show show = {testShow} selectedSeason = {1}/>)
+    const episode = screen.queryByText(/One/i)
+    expect(episode).not.toBeInTheDocument();
+
+    rerender(<Show show = {testShow} selectedSeason = {'none'}/>)
+
+    const options = screen.queryByLabelText('Select A Season')
+    userEvent.selectOptions(options, '1234')
+    
+    expect(episode).toBeInTheDocument();
+    
     
 });
 
