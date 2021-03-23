@@ -1,10 +1,54 @@
 
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import Display from './../Display'
+import {fetchShow as mockFetchShow} from '../../api/fetchShow'
+jest.mock('../../api/fetchShow')
+
+const testShow = {
+    image: {},
+    name: "The Mandalorian",
+    summary: "This is a show about Mandalorians",
+    seasons: [
+        {
+            id: 1234,
+            name: 'One',
+            episodes: []
+        },
+        {
+            id: 1234567,
+            name: 'Two',
+            episodes: []
+        }
+    ]
+}
+
+test('renders without any passed in props', ()=>{
+    render(<Display />)
+})
+
+test('fetch button is pressed, the show component will display', async ()=>{
+    render(<Display />)
+
+    mockFetchShow.mockResolvedValueOnce({
+        data: [
+            {
+                name: "Stranger Things"
+            }
+        ]
+    })
 
 
+    const button = screen.getByRole('button')
+    userEvent.click(button)
 
+
+    await waitFor(()=>{
+        const showName = screen.queryByText('Stranger Things')
+        expect(showName).toHaveTextContent('Stranger Things')
+    })
+})
 
 
 

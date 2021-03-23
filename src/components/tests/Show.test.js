@@ -13,7 +13,15 @@ const testShow = {
         {
             id: 1234,
             name: 'One',
-            episodes: []
+            episodes: [{
+                id:1,
+                name: "",
+                image: "http://static.tvmaze.com/uploads/images/medium_landscape/67/168918.jpg",
+                season: 1,
+                number: 1,
+                summary: "This is my summary",
+                runtime: 1
+            }]
         },
         {
             id: 1234567,
@@ -56,18 +64,14 @@ test('handleSelect is called when an season is selected', () => {
 
 });
 
-test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+test('component renders when no seasons are selected and when rerenders with a season passed in', async () => {
     const {rerender} = render(<Show show = {testShow} selectedSeason = {'none'} handleSelect={mockHandleSelect}/>)
 
-    const episode = screen.queryByText(/One/i)
-    expect(episode).not.toBeInTheDocument();
+    const episodeText = await screen.findByText(/episode 1/i)
+    expect(episodeText).not.toBeInTheDocument();
 
-    rerender(<Show show = {testShow} selectedSeason = {'none'}/>)
-
-    const options = screen.queryByLabelText('Select A Season')
-    userEvent.selectOptions(options, '1234')
-    
-    expect(episode).toBeInTheDocument();
+    rerender(<Show show = {testShow} selectedSeason = {1}/>)
+    expect(episodeText).toBeInTheDocument();
     
     
 });
