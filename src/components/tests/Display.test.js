@@ -1,56 +1,54 @@
 
-import React from 'react'
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import Display from './../Display'
-import {fetchShow as mockFetchShow} from '../../api/fetchShow'
-jest.mock('../../api/fetchShow')
+// import React from 'react'
+// import {render, screen, waitFor} from '@testing-library/react'
+// import userEvent from '@testing-library/user-event'
+// import Display from './../Display'
+// import {fetchShow as mockFetchShow} from '../../api/fetchShow'
+// jest.mock('../../api/fetchShow')
 
-const testShow = {
-    image: {},
-    name: "The Mandalorian",
-    summary: "This is a show about Mandalorians",
-    seasons: [
-        {
-            id: 1234,
-            name: 'One',
-            episodes: []
-        },
-        {
-            id: 1234567,
-            name: 'Two',
-            episodes: []
-        }
-    ]
-}
+// const testShow = {
+//     image: {},
+//     name: "The Mandalorian",
+//     summary: "This is a show about Mandalorians",
+//     seasons: [
+//         {
+//             id: 1234,
+//             name: 'One',
+//             episodes: []
+//         },
+//         {
+//             id: 1234567,
+//             name: 'Two',
+//             episodes: []
+//         }
+//     ]
+// }
 
-test('renders without any passed in props', ()=>{
-    render(<Display />)
-})
+// test('renders without any passed in props', ()=>{
+//     render(<Display />)
+// })
 
-test('fetch button is pressed, the show component will display', async ()=>{
-    render(<Display />)
+// test('fetch button is pressed, the show component will display', async ()=>{
+//     render(<Display />)
 
-    mockFetchShow.mockResolvedValueOnce({
-        data: [
-            {
-                name: "Stranger Things"
-            }
-        ]
-    })
-
-
-    const button = screen.getByRole('button')
-    userEvent.click(button)
+//     mockFetchShow.mockResolvedValueOnce({
+//         data: [
+//             {
+//                 name: "Stranger Things"
+//             }
+//         ]
+//     })
 
 
-    await waitFor(()=>{
-        const showName = screen.queryByText('Stranger Things')
-        expect(showName).toHaveTextContent('Stranger Things')
-    })
-})
+//     const button = screen.getByRole('button')
+//     userEvent.click(button)
 
 
+//     await waitFor(()=>{
+//         const showName = screen.queryByText('Stranger Things')
+//         expect(showName).toHaveTextContent('Stranger Things')
+//     })
+// })
 
 
 
@@ -58,10 +56,12 @@ test('fetch button is pressed, the show component will display', async ()=>{
 
 
 
-///Tasks:
-//1. Add in nessisary imports and values to establish the testing suite.
-//2. Test that the Display component renders without any passed in props.
-//3. Rebuild or copy a show test data element as used in the previous set of tests.
-//4. Test that when the fetch button is pressed, the show component will display. Make sure to account for the api call and change of state in building your test.
-//5. Test that when the fetch button is pressed, the amount of select options rendered is equal to the amount of seasons in your test data.
-//6. Notice the optional functional prop passed in to the Display component client code. Test that when the fetch button is pressed, this function is called.
+
+
+// ///Tasks:
+// //1. Add in nessisary imports and values to establish the testing suite.
+// //2. Test that the Display component renders without any passed in props.
+// //3. Rebuild or copy a show test data element as used in the previous set of tests.
+// //4. Test that when the fetch button is pressed, the show component will display. Make sure to account for the api call and change of state in building your test.
+// //5. Test that when the fetch button is pressed, the amount of select options rendered is equal to the amount of seasons in your test data.
+// //6. Notice the optional functional prop passed in to the Display component client code. Test that when the fetch button is pressed, this function is called.
